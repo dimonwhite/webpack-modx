@@ -1,5 +1,4 @@
 const path = require('path');
-const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -11,7 +10,7 @@ const AssetsManifest = require('webpack-assets-manifest');
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
-const filename = (ext) => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
+const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[hash].${ext}`);
 
 const optimization = () => {
   const config = {};
@@ -80,7 +79,7 @@ const plugins = () => {
     }),
     new SpriteLoaderPlugin(),
     new AssetsManifest({
-      output: path.resolve(__dirname, 'assets/templates') + '/manifest.json',
+      output: `${path.resolve(__dirname, 'assets/templates')}/manifest.json`,
       publicPath: true,
     }),
   ];
@@ -92,7 +91,7 @@ module.exports = {
   context: path.resolve(__dirname, 'assets/dev'),
   mode: 'development',
   entry: {
-    main: ['@babel/polyfill', './index.js'],
+    main: ['./js/main.js'],
   },
   output: {
     filename: filename('js'),
@@ -102,6 +101,7 @@ module.exports = {
     extensions: ['.js', '.json'],
     alias: {
       '@modules': path.resolve(__dirname, 'assets/dev/js/modules'),
+      '@dev': path.resolve(__dirname, 'assets/dev/'),
       '@': path.resolve(__dirname, 'assets/dev'),
     },
   },
